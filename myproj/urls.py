@@ -18,15 +18,20 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.models import User
+from django.db.utils import OperationalError
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ֿapi/', include('base.urls')),
 ]
-
-if not User.objects.filter(username='admin_shaked').exists():
-    User.objects.create_superuser('admin_shaked', 'admin@example.com', '12345678')
-    print("Superuser created successfully!")
     
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+try:
+    if not User.objects.filter(username='admin_shaked').exists():
+        User.objects.create_superuser('admin_shaked', 'admin@example.com', '12345678')
+        print("Superuser created successfully!")
+except OperationalError:
+    # אם הטבלאות עדיין לא קיימות, הוא פשוט ידלג ולא יקרוס
+    pass
