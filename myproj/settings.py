@@ -192,28 +192,20 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# Security: Update ALLOWED_HOSTS for production
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
+# Security: Update ALLOWED_HOSTS for diagnosis
+ALLOWED_HOSTS = ["*"]
 
-# CORS Configuration
-env_cors = os.environ.get("CORS_ALLOWED_ORIGINS")
-if env_cors:
-    CORS_ALLOWED_ORIGINS = []
-    for origin in env_cors.split(","):
-        origin = origin.strip()
-        if origin:
-            if not origin.startswith("http"):
-                CORS_ALLOWED_ORIGINS.append(f"https://{origin}")
-                CORS_ALLOWED_ORIGINS.append(f"http://{origin}")
-            else:
-                CORS_ALLOWED_ORIGINS.append(origin)
-    CORS_ALLOW_ALL_ORIGINS = False
-else:
-    CORS_ALLOW_ALL_ORIGINS = True
-    CORS_ALLOWED_ORIGINS = [
-        "http://localhost:3000",
-        "https://library-frontend-final.netlify.app",
-    ]
+# CORS Configuration - TEMPORARILY ALLOW ALL FOR DIAGNOSIS
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://library-frontend-final.netlify.app",
+]
+
+# CSRF Trusted Origins
+CSRF_TRUSTED_ORIGINS = [
+    "https://library-frontend-final.netlify.app",
+]
 
 # CSRF Trusted Origins (needed for some POST requests)
 CSRF_TRUSTED_ORIGINS = [origin for origin in CORS_ALLOWED_ORIGINS]
