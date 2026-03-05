@@ -77,8 +77,10 @@ class LoanView(APIView):
     def get(self,request):
         allLoans = LoanSerializer(Loan.objects.all(),many=True).data
         for loan in allLoans:
-            loan['clientID'] = {"name":Loan.objects.get(id=loan['id']).clientID.clientName,"id":Loan.objects.get(id=loan['id']).clientID.id}
-            loan['bookID'] =  {"name":Loan.objects.get(id=loan['id']).bookID.bookName,"id":Loan.objects.get(id=loan['id']).bookID.id,"type":Loan.objects.get(id=loan['id']).bookID.bookType}
+            loan_obj = Loan.objects.get(id=loan['id'])
+            loan['clientID'] = {"name": loan_obj.clientID.clientName, "id": loan_obj.clientID.id}
+            loan['bookID'] = {"name": loan_obj.bookID.bookName, "id": loan_obj.bookID.id, "type": loan_obj.bookID.bookType}
+            loan['returnDate'] = str(loan_obj.returnDate) if loan_obj.returnDate else None
         return Response(allLoans)
     def post(self,request):
         serializer = LoanSerializer(data=request.data)

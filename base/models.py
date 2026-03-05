@@ -27,6 +27,7 @@ class Loan(models.Model):
     id = models.AutoField(primary_key=True)
     startDate = models.DateField()
     endDate = models.DateField()
+    returnDate = models.DateField(null=True, blank=True)
     loanStatus = models.BooleanField(default=False)
 
     def __str__(self):
