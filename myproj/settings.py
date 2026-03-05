@@ -84,9 +84,9 @@ SIMPLE_JWT = {
 
 
 MIDDLEWARE = [
+   "corsheaders.middleware.CorsMiddleware",
    'django.middleware.security.SecurityMiddleware',
    'whitenoise.middleware.WhiteNoiseMiddleware',
-   "corsheaders.middleware.CorsMiddleware",
    'django.contrib.sessions.middleware.SessionMiddleware',
    'django.middleware.common.CommonMiddleware',
    'django.middleware.csrf.CsrfViewMiddleware',
@@ -196,10 +196,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 # CORS Configuration
-# If the environment variable exists, we use it. Otherwise, we use the defaults.
 env_cors = os.environ.get("CORS_ALLOWED_ORIGINS")
 if env_cors:
-    CORS_ALLOWED_ORIGINS = [origin.strip() for origin in env_cors.split(",")]
+    CORS_ALLOWED_ORIGINS = []
+    for origin in env_cors.split(","):
+        origin = origin.strip()
+        if origin:
+            if not origin.startswith("http"):
+                CORS_ALLOWED_ORIGINS.append(f"https://{origin}")
+                CORS_ALLOWED_ORIGINS.append(f"http://{origin}")
+            else:
+                CORS_ALLOWED_ORIGINS.append(origin)
     CORS_ALLOW_ALL_ORIGINS = False
 else:
     CORS_ALLOW_ALL_ORIGINS = True
@@ -207,3 +214,6 @@ else:
         "http://localhost:3000",
         "https://library-frontend-final.netlify.app",
     ]
+
+# CSRF Trusted Origins (needed for some POST requests)
+CSRF_TRUSTED_ORIGINS = [origin for origin in CORS_ALLOWED_ORIGINS]
