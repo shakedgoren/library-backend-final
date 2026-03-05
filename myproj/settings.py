@@ -192,9 +192,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CORS_ALLOW_ALL_ORIGINS = True
+# Security: Update ALLOWED_HOSTS for production
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "https://library-frontend-final.netlify.app", # הכתובת של הפרונט
-]
+# CORS Configuration
+# If the environment variable exists, we use it. Otherwise, we use the defaults.
+env_cors = os.environ.get("CORS_ALLOWED_ORIGINS")
+if env_cors:
+    CORS_ALLOWED_ORIGINS = [origin.strip() for origin in env_cors.split(",")]
+    CORS_ALLOW_ALL_ORIGINS = False
+else:
+    CORS_ALLOW_ALL_ORIGINS = True
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        "https://library-frontend-final.netlify.app",
+    ]
