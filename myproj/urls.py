@@ -32,6 +32,6 @@ try:
     if not User.objects.filter(username='admin_shaked').exists():
         User.objects.create_superuser('admin_shaked', 'admin@example.com', '12345678')
         print("Superuser created successfully!")
-except OperationalError:
+except Exception:
     # אם הטבלאות עדיין לא קיימות, הוא פשוט ידלג ולא יקרוס
     pass
