@@ -3,8 +3,7 @@
 This repository contains the **Backend API** for the **Library Management System**, designed to serve as a robust, headless engine managing books, clients, and active loans.
 
 ## 🔗 Live Application
-- **Frontend Live Demo:** [Click Here to Visit](#)  
-*(The backend is securely hosted and accessed strictly via REST requests from the frontend).*
+- **Frontend Live Demo:** [Click Here to Visit](https://library-frontend-final.netlify.app/)  
 
 ## 🛠 Tech Stack
 - **Framework:** Python 3, Django 5.x, Django REST Framework (DRF)
@@ -61,4 +60,4 @@ To run this backend server locally:
    python manage.py runserver
    ```
    
-*Designed and Developed by [Shaked Goren](https://github.com/shakedgoren)*
+*Designed and Developed by [Shaked Liloz](https://github.com/shakedgoren)*
